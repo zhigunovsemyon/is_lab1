@@ -12,8 +12,19 @@
  * 2-я ступень: шифрующие таблицы с двойной перестановкой по ключу
  */
 
-int main()
+static void usage(char const * execname);
+
+int main(int argc, char const * argv[])
 {
+	if (argc != 5) {
+		usage(argv[0]);
+		return EXIT_FAILURE;
+	}
 	std::print("Hello World!\n");
 	return EXIT_SUCCESS;
+}
+
+void usage(char const * execname)
+{
+	std::printf("Usage: %s (d|e) input_file key_file output_file\n", execname);
 }

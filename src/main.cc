@@ -54,9 +54,18 @@ int main(int argc, char const * argv[])
 		display_file_error(input_file, read_file_return.error());
 		return EXIT_FAILURE;
 	}
+	auto input_file_content = *read_file_return;
 
-	auto input_content = *read_file_return;
-	println("Входной файл:\n{}", input_content);
+	read_file_return = read_file(key_file);
+	if (!read_file_return) {
+		display_file_error(key_file, read_file_return.error());
+		return EXIT_FAILURE;
+	}
+
+	auto key_file_content = *read_file_return;
+
+	println("Входной файл:\n{}", input_file_content);
+	println("Ключ:\n{}", key_file_content);
 
 	println("Hello World!");
 	return EXIT_SUCCESS;

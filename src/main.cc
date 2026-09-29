@@ -1,5 +1,6 @@
-#include <cstdio>
 #include <cstdlib>
+#include <print>
+#include <string_view>
 
 /*
  * Задание:
@@ -13,14 +14,16 @@
  * Алфавит: 35 символов (А…Я, пробел, «.» )
  */
 
+using std::string_view;
+
 enum class Mode {
 	DECRYPT_MODE = 0,
 	ENCRYPT_MODE = 1,
 	INVALID_MODE = -1
 };
 
-static void usage(char const * execname);
-static Mode get_mode(char const * modename);
+static void usage(string_view execname);
+static Mode get_mode(string_view modename);
 
 int main(int argc, char const * argv[])
 {
@@ -33,7 +36,8 @@ int main(int argc, char const * argv[])
 	auto modename = argv[1];
 	auto mode = get_mode(modename);
 	if (mode == Mode::INVALID_MODE) {
-		std::fprintf(stderr, "Неверно указан режим работы: %s\n", modename);
+		std::println(stderr, "{} не является действующим режимом", modename);
+		usage(execname);
 		return EXIT_FAILURE;
 	}
 
@@ -41,18 +45,18 @@ int main(int argc, char const * argv[])
 	[[maybe_unused]] auto key_file = argv[3];
 	[[maybe_unused]] auto output_file = argv[4];
 
-	std::printf("Hello World!\n");
+	std::println("Hello World!");
 	return EXIT_SUCCESS;
 }
 
-static void usage(char const * execname)
+static void usage(string_view execname)
 {
-	std::fprintf(stderr, "Usage: %s (d|e) input_file key_file output_file\n", execname);
+	std::println(stderr, "{} (d|e) input_file key_file output_file", execname);
 }
 
-static Mode get_mode(char const * modename)
+static Mode get_mode(string_view modename)
 {
-	if (nullptr == modename) {
+	if (modename.length() != 1) {
 		return Mode::INVALID_MODE;
 	}
 

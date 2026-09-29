@@ -1,4 +1,5 @@
 #include "readfile.h"
+#include "getmode.h"
 
 #include <cstdlib>
 #include <print>
@@ -19,15 +20,8 @@
 using std::println;
 using std::string_view;
 
-enum class Mode {
-	DECRYPT_MODE = 0,
-	ENCRYPT_MODE = 1,
-	INVALID_MODE = -1
-};
-
 static void usage(string_view execname);
 static void display_file_error(string_view filename, FileError err);
-static Mode get_mode(string_view modename);
 
 int main(int argc, char const * argv[])
 {
@@ -74,25 +68,6 @@ int main(int argc, char const * argv[])
 static void usage(string_view execname)
 {
 	println(stderr, "{} (d|e) input_file key_file output_file", execname);
-}
-
-static Mode get_mode(string_view modename)
-{
-	if (modename.length() != 1) {
-		return Mode::INVALID_MODE;
-	}
-
-	char modechar = modename[0];
-	switch (modechar) {
-	case 'd':
-	case 'D':
-		return Mode::DECRYPT_MODE;
-	case 'e':
-	case 'E':
-		return Mode::ENCRYPT_MODE;
-	default:
-		return Mode::INVALID_MODE;
-	}
 }
 
 static void display_file_error(string_view filename, FileError err)
